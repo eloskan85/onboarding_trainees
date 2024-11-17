@@ -49,4 +49,16 @@ public class GameManager : MonoBehaviour
         _currentQuest.OnQuestComplete += OnCurrentQuestComplete;
         _currentQuest.StartQuest();
     }
+
+    public void RestartQuest(int questIndex)
+    {
+        if (questIndex < 0 ||  questIndex >= _quests.Count) 
+        { 
+            return; 
+        }
+
+        _currentQuestIndex = questIndex;
+        _currentQuest = _quests[questIndex];
+        _currentQuest.StartQuest();
+    }
 }

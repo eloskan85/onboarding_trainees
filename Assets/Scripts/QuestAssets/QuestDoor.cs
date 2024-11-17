@@ -18,6 +18,12 @@ public class QuestDoor : QuestAsset
     [SerializeField]
     private Transform _doorPivot;
 
+    [SerializeField]
+    private AudioSource _audioSource;
+
+    [SerializeField]
+    private AudioClip _doorOpenSfx;
+
     private Coroutine _coroutine;
 
     public override void ResetAsset()
@@ -45,6 +51,8 @@ public class QuestDoor : QuestAsset
         Debug.Log($"Opening Door '{name}'...");
         if (_time <= 0.0f)
             _time = 0.001f;
+
+        _audioSource.PlayOneShot(_doorOpenSfx);
 
         while (_animationTime <= _time)
         {

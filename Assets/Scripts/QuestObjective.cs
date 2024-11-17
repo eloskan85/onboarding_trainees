@@ -9,6 +9,8 @@ public abstract class QuestObjective : MonoBehaviour
 
     public abstract bool IsDone();
 
+    public abstract void BeginObjective();
+
     protected void TriggerIsDone()
     {
         OnIsDone?.Invoke(this);

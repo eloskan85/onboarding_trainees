@@ -26,6 +26,11 @@ public class Quest : MonoBehaviour
             asset.TriggerQuestBegin();
         }
 
+        foreach (var objective in _questObjectives)
+        {
+            objective.BeginObjective();
+        }
+
         if (IsQuestDone())
         {
             EndQuest();
