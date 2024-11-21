@@ -12,16 +12,16 @@ public class QuestItem : QuestAsset
 
     private bool _isQuestActive = false;
 
-    private Vector3 _startPosition;
-    private Quaternion _startRotation;
+    public Vector3 StartPosition;
+
+    public Quaternion StartRotation;
 
     private void Start()
     {
         _interactable.selectEntered.AddListener(Interactable_IsSelected);
         _interactable.selectExited.AddListener(Interactable_IsDeselected);
 
-        _startPosition = transform.position;
-        _startRotation = transform.rotation;
+        
     }
 
     private void OnDestroy()
@@ -32,7 +32,7 @@ public class QuestItem : QuestAsset
 
     public override void ResetAsset()
     {
-        transform.SetPositionAndRotation(_startPosition, _startRotation);
+        transform.SetPositionAndRotation(StartPosition, StartRotation);
         _vfxHint.Stop();
     }
 
