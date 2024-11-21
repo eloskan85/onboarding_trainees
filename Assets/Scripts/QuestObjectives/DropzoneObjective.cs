@@ -4,7 +4,7 @@ using UnityEngine;
 public class DropzoneObjective : QuestObjective
 {
     [SerializeField]
-    private GameObject _requiredObject;
+    private QuestItem _requiredObject;
 
     [SerializeField]
     private AudioSource _audioSource;
@@ -54,7 +54,7 @@ public class DropzoneObjective : QuestObjective
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject != _requiredObject)
+        if (other.gameObject != _requiredObject.gameObject)
         {
             return;
         }
@@ -65,18 +65,23 @@ public class DropzoneObjective : QuestObjective
     private void OnTriggerExit(Collider other)
     {
 
-        if (other.gameObject != _requiredObject)
+        if (other.gameObject != _requiredObject.gameObject)
         {
             return;
         }
 
-        StopDelivery();
+        if (!_isDelivered)
+        {
+            StopDelivery();
+        }
     }
 
     private void StartDelivery()
     {
         SetHintColor(_hintDeliveringColor);
         _deliverTimer = StartCoroutine(DeliveryTimer());
+
+        _requiredObject.StartDelivery();
     }
 
     private void StopDelivery()
@@ -86,6 +91,7 @@ public class DropzoneObjective : QuestObjective
             StopCoroutine(_deliverTimer);
             _deliverTimer = null;
             SetHintColor(_hintStartColor);
+            _requiredObject.StopDelivery();
         }
     }
 
