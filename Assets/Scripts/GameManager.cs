@@ -1,9 +1,15 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
+    [Serializable]
+    public class ScoreChangedEvent : UnityEvent<int>
+    {
+    }
+
     [SerializeField]
     private List<Quest> _quests;
 
@@ -11,6 +17,19 @@ public class GameManager : MonoBehaviour
     private Quest _currentQuest;
 
     public bool IsGameFinished => _currentQuestIndex == _quests.Count;
+
+    private int _score;
+    public int Score
+    {
+        get => _score;
+        set
+        {
+            _score = value;
+            OnScoreChanged.Invoke(_score);
+        }
+    }
+
+    public ScoreChangedEvent OnScoreChanged;
 
     private void Start()
     {
@@ -24,6 +43,8 @@ public class GameManager : MonoBehaviour
 
     private void BeginGame()
     {
+        Score = 0;
+
         _currentQuest = _quests[_currentQuestIndex];
         _currentQuest.OnQuestComplete += OnCurrentQuestComplete;
         _currentQuest.StartQuest();
@@ -34,6 +55,8 @@ public class GameManager : MonoBehaviour
         _currentQuest.OnQuestComplete -= OnCurrentQuestComplete;
         _currentQuestIndex++;
         Debug.Log($"Quest {_currentQuestIndex} is completed!");
+
+        Score++;
 
         if (IsGameFinished)
         {
@@ -50,15 +73,12 @@ public class GameManager : MonoBehaviour
         _currentQuest.StartQuest();
     }
 
-    public void RestartQuest(int questIndex)
+    public void ShutdownApplication()
     {
-        if (questIndex < 0 ||  questIndex >= _quests.Count) 
-        { 
-            return; 
-        }
-
-        _currentQuestIndex = questIndex;
-        _currentQuest = _quests[questIndex];
-        _currentQuest.StartQuest();
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.ExitPlaymode();
+#else
+        Application.Quit();
+#endif
     }
 }

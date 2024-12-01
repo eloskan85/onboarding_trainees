@@ -120,7 +120,9 @@ public class DropzoneObjective : QuestObjective
 
         var boxCollider = GetComponent<BoxCollider>();
 
-        var center = boxCollider.center + transform.position;
+        Gizmos.matrix = transform.localToWorldMatrix;
+
+        var center = boxCollider.center;
         var size = boxCollider.size;
 
         Gizmos.color = color;

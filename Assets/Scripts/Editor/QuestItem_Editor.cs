@@ -12,6 +12,7 @@ public class QuestItem_Editor : Editor
 
         if (GUILayout.Button("Set Start Position & Rotation"))
         {
+            Undo.RecordObject(target, "Setting start position and rotation.");
             item.StartRotation = item.transform.rotation;
             item.StartPosition = item.transform.position;
         }

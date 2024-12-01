@@ -11,7 +11,7 @@ public class Quest : MonoBehaviour
     private List<QuestAsset> _questAssets;
 
     public event Action OnQuestComplete;
-
+    
     public void StartQuest()
     {
         InitializeQuest();
